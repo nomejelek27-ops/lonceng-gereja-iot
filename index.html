@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lonceng Santa Maria Ratu Oeolo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:wght@500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="icons/icon-192.png">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
+<meta name="theme-color" content="#8A5A2B">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Lonceng Gereja">
+</head>
+<body>
+
+<!-- ============ LAYAR LOGIN ============ -->
+<section id="loginScreen" class="screen login-screen">
+  <div class="login-visual">
+    <img src="img/bunda-maria.jpg" alt="Bunda Maria" class="login-visual-img">
+    <div class="login-visual-caption">
+      <span class="login-visual-eyebrow">Gereja Santa Maria</span>
+      <span class="login-visual-title">Ratu Oeolo</span>
+    </div>
+  </div>
+
+  <div class="login-panel">
+    <div class="bell-mark" aria-hidden="true">
+      <svg viewBox="0 0 60 60" width="40" height="40">
+        <path d="M30 8c-1 0-2 .8-2 2v2c-7 1-12 7-12 15v9l-4 6h36l-4-6v-9c0-8-5-14-12-15v-2c0-1.2-1-2-2-2z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+        <circle cx="30" cy="47" r="2.4" fill="currentColor"/>
+      </svg>
+    </div>
+    <h1 class="app-title">Lonceng Gereja</h1>
+    <p class="app-sub">Kendali dan penjadwalan lonceng gereja</p>
+
+    <form id="loginForm" class="login-form">
+      <label>
+        <span>Nama pengguna</span>
+        <input type="text" id="username" autocomplete="username" required>
+      </label>
+      <label>
+        <span>Kata sandi</span>
+        <input type="password" id="password" autocomplete="current-password" required>
+      </label>
+      <button type="submit" class="primary-btn">Masuk</button>
+      <p class="form-error" id="loginError" hidden></p>
+    </form>
+  </div>
+</section>
+
+<!-- ============ LAYAR DASHBOARD ============ -->
+<section id="dashScreen" class="screen" hidden>
+  <header class="topbar">
+    <div class="topbar-left">
+      <div class="bell-mark small" aria-hidden="true">
+        <svg viewBox="0 0 60 60" width="26" height="26">
+          <path d="M30 8c-1 0-2 .8-2 2v2c-7 1-12 7-12 15v9l-4 6h36l-4-6v-9c0-8-5-14-12-15v-2c0-1.2-1-2-2-2z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+          <circle cx="30" cy="47" r="2.4" fill="currentColor"/>
+        </svg>
+      </div>
+      <div>
+        <div class="topbar-title">Santa Maria Ratu Oeolo</div>
+        <div class="topbar-date" id="todayLabel">-</div>
+      </div>
+    </div>
+    <div class="topbar-right">
+      <span class="device-status" id="deviceStatus">
+        <span class="dot" id="deviceDot"></span>
+        <span id="deviceStatusText">Memeriksa alat...</span>
+      </span>
+      <button id="settingsBtn" class="ghost-btn" title="Pengaturan / kunci perangkat">Pengaturan</button>
+      <button id="logoutBtn" class="ghost-btn">Keluar</button>
+    </div>
+  </header>
+
+  <div id="notifBanner" class="notif-banner" hidden></div>
+
+  <main class="content">
+    <section class="panel">
+      <div class="panel-head">
+        <h2>Jadwal hari ini</h2>
+        <div class="panel-actions">
+          <button id="addScheduleBtn" class="ghost-btn">+ Tambah jadwal</button>
+          <button id="manualRingBtn" class="primary-btn">Bunyikan manual</button>
+        </div>
+      </div>
+      <ul id="scheduleList" class="schedule-list"></ul>
+    </section>
+
+    <section class="panel">
+      <div class="panel-head">
+        <h2>Jadwal mendatang</h2>
+      </div>
+      <ul id="upcomingList" class="schedule-list"></ul>
+    </section>
+
+    <section class="panel calendar-panel">
+      <div class="calendar-head">
+        <button id="calPrevBtn" class="cal-nav-btn" aria-label="Bulan sebelumnya">‹</button>
+        <div class="calendar-title">
+          <span id="calMonthLabel">-</span>
+          <button id="calTodayBtn" class="cal-today-btn">Hari ini</button>
+        </div>
+        <button id="calNextBtn" class="cal-nav-btn" aria-label="Bulan berikutnya">›</button>
+      </div>
+      <div class="calendar-weekdays">
+        <span>Min</span><span>Sen</span><span>Sel</span><span>Rab</span><span>Kam</span><span>Jum</span><span>Sab</span>
+      </div>
+      <div class="calendar-grid" id="calendarGrid"></div>
+      <div class="calendar-day-panel">
+        <div class="calendar-day-panel-head">
+          <span id="calSelectedLabel">-</span>
+          <button id="calAddFab" class="cal-fab" aria-label="Tambah jadwal di tanggal ini">+</button>
+        </div>
+        <ul id="calEventsList" class="schedule-list"></ul>
+      </div>
+    </section>
+
+    <section class="panel">
+      <div class="panel-head">
+        <h2>Riwayat pembunyian</h2>
+      </div>
+      <table class="log-table">
+        <thead>
+          <tr><th>Waktu tercatat</th><th>Keterangan</th></tr>
+        </thead>
+        <tbody id="logBody"></tbody>
+      </table>
+    </section>
+  </main>
+</section>
+
+<!-- ============ MODAL TAMBAH JADWAL ============ -->
+<div id="addScheduleModal" class="modal-backdrop" hidden>
+  <div class="modal">
+    <h3>Tambah jadwal lonceng</h3>
+    <p class="muted">Untuk jadwal khusus di luar 4 jadwal tetap harian, misalnya perayaan atau misa tambahan.</p>
+    <form id="addScheduleForm" class="login-form">
+      <label>
+        <span>Tanggal</span>
+        <input type="date" id="scheduleDate" required>
+      </label>
+      <label>
+        <span>Jam</span>
+        <input type="time" id="scheduleTime" required>
+      </label>
+      <label>
+        <span>Judul / keterangan</span>
+        <input type="text" id="scheduleLabel" placeholder="Misalnya: Misa Malam Natal" required>
+      </label>
+      <button type="submit" class="primary-btn">Simpan jadwal</button>
+      <p class="form-error" id="addScheduleError" hidden></p>
+    </form>
+    <button id="closeAddScheduleBtn" class="ghost-btn" style="margin-top: 10px; width: 100%;">Batal</button>
+  </div>
+</div>
+
+<!-- ============ MODAL PENGATURAN ============ -->
+<div id="settingsModal" class="modal-backdrop" hidden>
+  <div class="modal">
+    <h3>Kunci perangkat (device key)</h3>
+    <p class="muted">Masukkan kunci ini ke dalam sketch ESP32 (variabel <code>deviceKey</code>) agar alat bisa terhubung ke sistem ini.</p>
+    <div class="key-box" id="deviceKeyBox">memuat...</div>
+
+    <h3 style="margin-top: 20px;">Notifikasi push</h3>
+    <p class="muted" id="pushStatusText">Memeriksa status notifikasi...</p>
+    <button id="pushToggleBtn" class="primary-btn" style="width: 100%;" hidden>Aktifkan notifikasi</button>
+    <button id="pushTestBtn" class="ghost-btn" style="width: 100%; margin-top: 8px;" hidden>Kirim tes notifikasi</button>
+    <p class="form-error" id="pushTestError" hidden></p>
+    <p class="form-success" id="pushTestSuccess" hidden></p>
+
+    <button id="closeSettingsBtn" class="ghost-btn" style="margin-top: 14px; width: 100%;">Tutup</button>
+  </div>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>
